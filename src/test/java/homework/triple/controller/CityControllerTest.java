@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import homework.triple.acceptance.AcceptanceTest;
 import homework.triple.controller.request.RegisterCityRequest;
+import homework.triple.controller.request.UpdateCityRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -42,4 +43,50 @@ class CityControllerTest extends AcceptanceTest {
 		);
 	}
 
+	@DisplayName("도시 이름 수정 테스트")
+	@Test
+	void update_city() {
+		final Long cityId = 도시_등록();
+
+		final String token = 로그인();
+
+		final String updateCityName = "pangyo";
+
+		UpdateCityRequest request = new UpdateCityRequest(updateCityName);
+
+		final ExtractableResponse<Response> response = RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.header("Authorization", "Bearer " + token)
+			.body(request)
+			.when()
+			.patch(CITY_ENTRY_POINT + "/" + cityId)
+			.then().log().all()
+			.extract();
+
+		assertAll(
+			() -> assertThat(response.jsonPath().getString("resultCode")).isEqualTo("success"),
+			() -> assertThat(response.jsonPath().getString("result.id")).isEqualTo(cityId.toString()),
+			() -> assertThat(response.jsonPath().getString("result.updateCityName")).isEqualTo(updateCityName)
+		);
+
+	}
+
+	public static Long 도시_등록() {
+		final String token = 로그인();
+
+		final String cityName = "seoul";
+
+		RegisterCityRequest request = new RegisterCityRequest(cityName);
+
+		return RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.header("Authorization", "Bearer " + token)
+			.body(request)
+			.when()
+			.post(CITY_ENTRY_POINT + "/register")
+			.then().log().all()
+			.extract()
+			.jsonPath()
+			.getLong("result.id");
+	}
 }
