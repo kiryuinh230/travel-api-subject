@@ -1,6 +1,6 @@
 package homework.triple.global.exception;
 
-import homework.triple.controller.response.CommonResponse;
+import homework.triple.global.CommonResponse;
 import homework.triple.global.error.ErrorCode;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;

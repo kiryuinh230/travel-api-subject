@@ -2,7 +2,7 @@ package homework.triple.controller;
 
 import homework.triple.controller.request.JoinMemberRequest;
 import homework.triple.controller.request.LoginMemberRequest;
-import homework.triple.controller.response.CommonResponse;
+import homework.triple.global.CommonResponse;
 import homework.triple.controller.response.LoginMemberResponse;
 import homework.triple.service.MemberService;
 import javax.validation.Valid;

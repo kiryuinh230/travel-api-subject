@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import homework.triple.acceptance.AcceptanceTest;
 import homework.triple.controller.fixtures.MemberFixtures;
 import homework.triple.controller.request.JoinMemberRequest;
+import homework.triple.global.error.ErrorCode;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -32,6 +33,25 @@ class MemberControllerTest extends AcceptanceTest {
 
 		assertAll(
 			() -> assertThat(response.jsonPath().getString("resultCode")).isEqualTo("success"),
+			() -> assertThat(response.jsonPath().getString("result")).isNotEmpty()
+		);
+	}
+
+	@DisplayName("중복된 아이디로 회원가입시 실패한다.")
+	@Test
+	void duplication_username() {
+		회원가입();
+
+		final ExtractableResponse<Response> response = RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.body(MemberFixtures.loginMemberRequest())
+			.when()
+			.post(MEMBER_ENTRY_POINT + "/join")
+			.then().log().all()
+			.extract();
+
+		assertAll(
+			() -> assertThat(response.jsonPath().getString("resultCode")).isEqualTo(ErrorCode.DUPLICATED_USERNAME.name()),
 			() -> assertThat(response.jsonPath().getString("result")).isNotEmpty()
 		);
 	}
