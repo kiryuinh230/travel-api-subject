@@ -2,6 +2,7 @@ package homework.triple.controller;
 
 import homework.triple.controller.request.RegisterCityRequest;
 import homework.triple.controller.request.UpdateCityRequest;
+import homework.triple.controller.response.CityResponse;
 import homework.triple.controller.response.RegisterCityResponse;
 import homework.triple.controller.response.UpdateCityResponse;
 import homework.triple.domain.City;
@@ -9,6 +10,7 @@ import homework.triple.global.CommonResponse;
 import homework.triple.service.CityService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,5 +35,12 @@ public class CityController {
 		final City city = cityService.updateCity(id, request.getUpdateCityName());
 
 		return CommonResponse.success(UpdateCityResponse.fromCity(city));
+	}
+
+	@GetMapping("/city/{id}")
+	public CommonResponse findCityById(@PathVariable Long id) {
+		final City city = cityService.findById(id);
+
+		return CommonResponse.success(CityResponse.fromCity(city));
 	}
 }

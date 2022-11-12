@@ -36,4 +36,12 @@ public class CityService {
 
 		return City.fromEntity(cityEntity);
 	}
+
+	@Transactional(readOnly = true)
+	public City findById(final Long id) {
+		final CityEntity cityEntity = cityRepository.findById(id)
+			.orElseThrow(() -> new CityNotFoundException(ErrorCode.CITY_NOT_FOUND));
+
+		return City.fromEntity(cityEntity);
+	}
 }
