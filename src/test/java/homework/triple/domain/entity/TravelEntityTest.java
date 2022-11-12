@@ -3,7 +3,7 @@ package homework.triple.domain.entity;
 import static org.assertj.core.api.Assertions.*;
 
 import homework.triple.domain.TravelState;
-import homework.triple.domain.exception.CannotUpdateTravelException;
+import homework.triple.domain.exception.CannotAccessTravelException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ class TravelEntityTest {
 		Long otherMemberId = 2L;
 
 		assertThatThrownBy(() -> travelEntity.validateWriter(otherMemberId))
-			.isInstanceOf(CannotUpdateTravelException.class);
+			.isInstanceOf(CannotAccessTravelException.class);
 	}
 
 }

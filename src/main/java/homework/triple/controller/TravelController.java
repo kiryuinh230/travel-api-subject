@@ -3,6 +3,7 @@ package homework.triple.controller;
 import homework.triple.controller.request.RegisterTravelRequest;
 import homework.triple.controller.request.UpdateTravelNameRequest;
 import homework.triple.controller.response.RegisterTravelResponse;
+import homework.triple.controller.response.TravelResponse;
 import homework.triple.controller.response.UpdateTravelNameResponse;
 import homework.triple.domain.Member;
 import homework.triple.domain.Travel;
@@ -12,6 +13,7 @@ import homework.triple.utils.ClassUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class TravelController {
 
 	private final TravelService travelService;
+
+	@GetMapping("/travel/{travelId}")
+	public CommonResponse<TravelResponse> findTravelById(Authentication authentication, @PathVariable Long travelId) {
+		Member member = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), Member.class);
+
+		Travel travel = travelService.findById(member.getId(), travelId);
+
+		return CommonResponse.success(TravelResponse.fromTravel(travel));
+	}
 
 	@PostMapping("/travel/register")
 	public CommonResponse<RegisterTravelResponse> registerTravel(Authentication authentication, @RequestBody RegisterTravelRequest request) {

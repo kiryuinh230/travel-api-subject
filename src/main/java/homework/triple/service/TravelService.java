@@ -43,4 +43,14 @@ public class TravelService {
 
 		travelRepository.delete(travelEntity);
 	}
+
+	@Transactional(readOnly = true)
+	public Travel findById(final Long memberId, final Long travelId) {
+		final TravelEntity travelEntity = travelRepository.findById(travelId)
+			.orElseThrow(() -> new TravelNotFoundEntityException(ErrorCode.TRAVEL_NOT_FOUNT));
+
+		travelEntity.validateWriter(memberId);
+
+		return Travel.fromEntity(travelEntity);
+	}
 }

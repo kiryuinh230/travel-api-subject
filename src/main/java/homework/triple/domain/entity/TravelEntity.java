@@ -1,7 +1,7 @@
 package homework.triple.domain.entity;
 
 import homework.triple.domain.TravelState;
-import homework.triple.domain.exception.CannotUpdateTravelException;
+import homework.triple.domain.exception.CannotAccessTravelException;
 import homework.triple.global.error.ErrorCode;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -47,7 +47,7 @@ public class TravelEntity {
 
 	public void validateWriter(final Long memberId) {
 		if (!Objects.equals(this.memberId, memberId)) {
-			throw new CannotUpdateTravelException(ErrorCode.INVALID_PERMISSION);
+			throw new CannotAccessTravelException(ErrorCode.INVALID_PERMISSION);
 		}
 	}
 
