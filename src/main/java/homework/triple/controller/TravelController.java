@@ -48,7 +48,7 @@ public class TravelController {
 	public CommonResponse<UpdateTravelNameResponse> updateTravel(Authentication authentication, @RequestBody UpdateTravelRequest request, @PathVariable Long travelId) {
 		Member member = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), Member.class);
 
-		final Travel travel = travelService.updateTravel(member.getId(), travelId, request.getUpdateName(), request.getUpdateState());
+		final Travel travel = travelService.updateTravel(member.getId(), travelId, request.getUpdateName(), request.getUpdateState(), request.getStartDate(), request.getEndDate());
 
 		return CommonResponse.success(UpdateTravelNameResponse.fromTravel(travel));
 	}

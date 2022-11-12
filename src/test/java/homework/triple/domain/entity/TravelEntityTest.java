@@ -28,7 +28,7 @@ class TravelEntityTest {
 			.isInstanceOf(CannotAccessTravelException.class);
 	}
 
-	@DisplayName("여행 시작일이 종료일 이후라면 예외가 발생한다.")
+	@DisplayName("여행 생성시 여행 시작일이 종료일 이후라면 예외가 발생한다.")
 	@Test
 	void start_date_after_end_date() {
 		String travelName = "서울여행";
@@ -41,4 +41,22 @@ class TravelEntityTest {
 			.isInstanceOf(TravelDateException.class);
 	}
 
+	@DisplayName("여행 수정시 여행 시작일이 종료일 이후라면 예외가 발생한다.")
+	@Test
+	void travel_update_start_date_after_end_date() {
+		String travelName = "서울여행";
+		Long memberId = 1L;
+		Long cityId = 1L;
+		LocalDate startDate = LocalDate.of(22, 12, 1);
+		LocalDate endDate = LocalDate.of(22, 12, 10);
+
+		final TravelEntity travelEntity = new TravelEntity(travelName, TravelState.TRAVELING, memberId, cityId, startDate, endDate);
+
+		LocalDate updateStartDate = LocalDate.of(22, 12, 20);
+		LocalDate updateEndDate = LocalDate.of(22, 12, 10);
+
+
+		assertThatThrownBy(() -> travelEntity.updateTravel(memberId, travelName, TravelState.TRAVELING, updateStartDate, updateEndDate))
+			.isInstanceOf(TravelDateException.class);
+	}
 }

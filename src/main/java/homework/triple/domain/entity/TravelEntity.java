@@ -63,8 +63,12 @@ public class TravelEntity {
 		}
 	}
 
-	public void updateTravel(final String updateName, final TravelState state) {
+	public void updateTravel(final Long writerId, final String updateName, final TravelState state, final LocalDate startDate, final LocalDate endDate) {
+		validateWriter(writerId);
+		validateTravelDate(startDate, endDate);
 		this.travelName = updateName;
 		this.state = state;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 }

@@ -25,13 +25,11 @@ public class TravelService {
 	}
 
 	@Transactional
-	public Travel updateTravel(final Long memberId, final Long travelId, final String updateName, final TravelState state) {
+	public Travel updateTravel(final Long memberId, final Long travelId, final String updateName, final TravelState state, final LocalDate startDate, final LocalDate endDate) {
 		final TravelEntity travelEntity = travelRepository.findById(travelId)
 			.orElseThrow(() -> new TravelNotFoundEntityException(ErrorCode.TRAVEL_NOT_FOUNT));
 
-		travelEntity.validateWriter(memberId);
-
-		travelEntity.updateTravel(updateName, state);
+		travelEntity.updateTravel(memberId, updateName, state, startDate, endDate);
 
 		return Travel.fromEntity(travelEntity);
 	}
