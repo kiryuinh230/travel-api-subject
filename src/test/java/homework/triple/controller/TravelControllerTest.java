@@ -99,6 +99,25 @@ class TravelControllerTest extends AcceptanceTest {
 		assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 	}
 
+	@DisplayName("단건 여행 조회")
+	@Test
+	void find_travel_by_id() {
+		final Long cityId = 도시_등록();
+		final Long travelId = 여행_등록(cityId);
+
+		final String token = 로그인();
+
+		final ExtractableResponse<Response> response = RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.header("Authorization", "Bearer " + token)
+			.when()
+			.get(TRAVEL_ENTRY_POINT + "/" + travelId)
+			.then().log().all()
+			.extract();
+
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+	}
+
 	public static Long 여행_등록(final Long cityId) {
 		final String token = 로그인();
 
