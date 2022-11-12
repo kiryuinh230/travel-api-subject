@@ -12,7 +12,8 @@ public enum ErrorCode {
 	USER_NOT_FOUND(HttpStatus.CONFLICT, "not found user"),
 	INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "token is invalid"),
 	DUPLICATED_USERNAME(HttpStatus.CONFLICT, "duplicated username"),
-	WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "wrong password");
+	WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "wrong password"),
+	DUPLICATED_CITY_NAME(HttpStatus.CONFLICT, "duplicated city name");
 
 	private final HttpStatus httpStatus;
 	private final String message;

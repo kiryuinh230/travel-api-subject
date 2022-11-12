@@ -1,4 +1,4 @@
-package homework.triple.domain.model;
+package homework.triple.domain;
 
 import homework.triple.domain.entity.MemberEntity;
 import java.sql.Timestamp;

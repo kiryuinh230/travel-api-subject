@@ -1,6 +1,6 @@
 package homework.triple.configuration.filter;
 
-import homework.triple.domain.model.Member;
+import homework.triple.domain.Member;
 import homework.triple.service.MemberService;
 import homework.triple.utils.JwtTokenUtils;
 import java.io.IOException;
