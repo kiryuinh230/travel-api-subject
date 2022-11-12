@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import homework.triple.domain.TravelState;
 import homework.triple.domain.exception.CannotAccessTravelException;
+import homework.triple.domain.exception.TravelDateException;
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +17,28 @@ class TravelEntityTest {
 		String travelName = "서울여행";
 		Long memberId = 1L;
 		Long cityId = 1L;
+		LocalDate startDate = LocalDate.of(22, 12, 1);
+		LocalDate endDate = LocalDate.of(22, 12, 10);
 
-		final TravelEntity travelEntity = new TravelEntity(travelName, TravelState.TRAVELING, memberId, cityId);
+		final TravelEntity travelEntity = new TravelEntity(travelName, TravelState.TRAVELING, memberId, cityId, startDate, endDate);
 
 		Long otherMemberId = 2L;
 
 		assertThatThrownBy(() -> travelEntity.validateWriter(otherMemberId))
 			.isInstanceOf(CannotAccessTravelException.class);
+	}
+
+	@DisplayName("여행 시작일이 종료일 이후라면 예외가 발생한다.")
+	@Test
+	void start_date_after_end_date() {
+		String travelName = "서울여행";
+		Long memberId = 1L;
+		Long cityId = 1L;
+		LocalDate startDate = LocalDate.of(22, 12, 10);
+		LocalDate endDate = LocalDate.of(22, 12, 1);
+
+		assertThatThrownBy(() -> new TravelEntity(travelName, TravelState.TRAVELING, memberId, cityId, startDate, endDate))
+			.isInstanceOf(TravelDateException.class);
 	}
 
 }

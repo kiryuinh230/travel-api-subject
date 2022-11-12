@@ -12,6 +12,7 @@ import homework.triple.domain.TravelState;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ class TravelControllerTest extends AcceptanceTest {
 
 		final String travelName = "서울 여행";
 
-		final RegisterTravelRequest request = new RegisterTravelRequest(travelName, cityId);
+		final RegisterTravelRequest request = new RegisterTravelRequest(travelName, cityId, LocalDate.of(22, 10, 1), LocalDate.of(22, 12, 1));
 
 		final ExtractableResponse<Response> response = RestAssured.given().log().all()
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -59,8 +60,11 @@ class TravelControllerTest extends AcceptanceTest {
 		final String token = 로그인();
 
 		final String updateTravelName = "일본 여행";
+		final TravelState updateTravelState = TravelState.TRAVELING;
+		final LocalDate startDate = LocalDate.of(22, 12, 1);
+		final LocalDate endDate = LocalDate.of(22, 12, 10);
 
-		final UpdateTravelNameRequest request = new UpdateTravelNameRequest(updateTravelName);
+		final UpdateTravelNameRequest request = new UpdateTravelNameRequest(updateTravelName, updateTravelState, startDate, endDate);
 
 		final ExtractableResponse<Response> response = RestAssured.given().log().all()
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -122,8 +126,10 @@ class TravelControllerTest extends AcceptanceTest {
 		final String token = 로그인();
 
 		final String travelName = "서울 여행";
+		LocalDate startDate = LocalDate.of(22, 12, 1);
+		LocalDate endDate = LocalDate.of(22, 12, 10);
 
-		final RegisterTravelRequest request = new RegisterTravelRequest(travelName, cityId);
+		final RegisterTravelRequest request = new RegisterTravelRequest(travelName, cityId, startDate, endDate);
 
 		return RestAssured.given().log().all()
 			.contentType(MediaType.APPLICATION_JSON_VALUE)

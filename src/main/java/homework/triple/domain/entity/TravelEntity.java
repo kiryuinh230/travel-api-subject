@@ -2,7 +2,9 @@ package homework.triple.domain.entity;
 
 import homework.triple.domain.TravelState;
 import homework.triple.domain.exception.CannotAccessTravelException;
+import homework.triple.domain.exception.TravelDateException;
 import homework.triple.global.error.ErrorCode;
+import java.time.LocalDate;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,6 +29,7 @@ public class TravelEntity {
 
 	private String travelName;
 
+
 	@Enumerated(EnumType.STRING)
 	private TravelState state;
 
@@ -34,15 +37,24 @@ public class TravelEntity {
 
 	private Long cityId;
 
-	public TravelEntity(final String travelName, final TravelState state, final Long memberId, final Long cityId) {
+	private LocalDate startDate;
+
+	private LocalDate endDate;
+
+	public TravelEntity(final String travelName, final TravelState state, final Long memberId, final Long cityId, final LocalDate startDate, final LocalDate endDate) {
+		validateTravelDate(startDate, endDate);
 		this.travelName = travelName;
 		this.state = state;
 		this.memberId = memberId;
 		this.cityId = cityId;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
-	public static TravelEntity planTrip(String travelName, Long memberId, Long cityId) {
-		return new TravelEntity(travelName, TravelState.PLAN_TRIP, memberId, cityId);
+	private void validateTravelDate(final LocalDate startDate, final LocalDate endDate) {
+		if (startDate.isAfter(endDate)) {
+			throw new TravelDateException();
+		}
 	}
 
 	public void validateWriter(final Long memberId) {
@@ -51,7 +63,8 @@ public class TravelEntity {
 		}
 	}
 
-	public void updateTravelName(final String updateName) {
+	public void updateTravel(final String updateName, final TravelState state) {
 		this.travelName = updateName;
+		this.state = state;
 	}
 }
