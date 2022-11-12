@@ -60,10 +60,24 @@ class MemberControllerTest extends AcceptanceTest {
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.body(MemberFixtures.joinMemberRequest())
 			.when()
-			.post("/member/join")
+			.post(MEMBER_ENTRY_POINT + "/join")
 			.then().log().all()
 			.extract();
 	}
 
+	public static String 로그인() {
+		회원가입();
+
+		final String token = RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.body(MemberFixtures.loginMemberRequest())
+			.when()
+			.post(MEMBER_ENTRY_POINT + "/login")
+			.then().log().all()
+			.extract()
+			.jsonPath().getString("result");
+
+		return token;
+	}
 
 }
