@@ -14,6 +14,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 class TravelControllerTest extends AcceptanceTest {
@@ -77,6 +78,25 @@ class TravelControllerTest extends AcceptanceTest {
 			() -> assertThat(response.jsonPath().getString("result.memberId")).isNotEmpty(),
 			() -> assertThat(response.jsonPath().getString("result.cityId")).isNotEmpty()
 		);
+	}
+
+	@DisplayName("여행을 삭제한다.")
+	@Test
+	void delete_travel() {
+		final Long cityId = 도시_등록();
+		final Long travelId = 여행_등록(cityId);
+
+		final String token = 로그인();
+
+		final ExtractableResponse<Response> response = RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.header("Authorization", "Bearer " + token)
+			.when()
+			.delete(TRAVEL_ENTRY_POINT + "/" + travelId)
+			.then().log().all()
+			.extract();
+
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 	}
 
 	public static Long 여행_등록(final Long cityId) {

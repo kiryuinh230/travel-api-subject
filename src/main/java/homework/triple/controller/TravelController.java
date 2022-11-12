@@ -11,6 +11,7 @@ import homework.triple.service.TravelService;
 import homework.triple.utils.ClassUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,4 +42,12 @@ public class TravelController {
 		return CommonResponse.success(UpdateTravelNameResponse.fromTravel(travel));
 	}
 
+	@DeleteMapping("/travel/{travelId}")
+	public CommonResponse<Void> deleteTravel(Authentication authentication, @PathVariable Long travelId) {
+		Member member = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), Member.class);
+
+		travelService.deleteTravel(member.getId(), travelId);
+
+		return CommonResponse.success();
+	}
 }

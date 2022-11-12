@@ -10,17 +10,18 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "members")
 @Getter
-@Setter
-@SQLDelete(sql = "UPDATED \"members\" SET removed_at = NOW() where id = ?")
+@SQLDelete(sql = "UPDATED members SET removed_at = NOW() where id = ?")
 @Where(clause = "removed_at is NULL")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberEntity {
 
 	@Id
@@ -41,6 +42,11 @@ public class MemberEntity {
 	@Column(name = "removed_at")
 	private Timestamp removedAt;
 
+	private MemberEntity(final String userName, final String password) {
+		this.userName = userName;
+		this.password = password;
+	}
+
 	@PrePersist
 	void registeredAt() {
 		this.registeredAt = Timestamp.from(Instant.now());
@@ -52,10 +58,6 @@ public class MemberEntity {
 	}
 
 	public static MemberEntity of(String userName, String password) {
-		MemberEntity memberEntity = new MemberEntity();
-		memberEntity.setUserName(userName);
-		memberEntity.setPassword(password);
-
-		return memberEntity;
+		return new MemberEntity(userName, password);
 	}
 }
