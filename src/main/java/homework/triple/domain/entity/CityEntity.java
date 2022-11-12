@@ -31,4 +31,8 @@ public class CityEntity {
 	public static CityEntity formCityName(final String cityName) {
 		return new CityEntity(cityName);
 	}
+
+	public void update(final String updateCityName) {
+		this.cityName = updateCityName;
+	}
 }

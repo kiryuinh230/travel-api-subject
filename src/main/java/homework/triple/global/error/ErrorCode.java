@@ -13,7 +13,8 @@ public enum ErrorCode {
 	INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "token is invalid"),
 	DUPLICATED_USERNAME(HttpStatus.CONFLICT, "duplicated username"),
 	WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "wrong password"),
-	DUPLICATED_CITY_NAME(HttpStatus.CONFLICT, "duplicated city name");
+	DUPLICATED_CITY_NAME(HttpStatus.CONFLICT, "duplicated city name"),
+	CITY_NOT_FOUND(HttpStatus.CONFLICT, "not found city");
 
 	private final HttpStatus httpStatus;
 	private final String message;
