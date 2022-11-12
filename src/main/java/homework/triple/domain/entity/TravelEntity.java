@@ -1,6 +1,9 @@
 package homework.triple.domain.entity;
 
 import homework.triple.domain.TravelState;
+import homework.triple.domain.exception.CannotUpdateTravelException;
+import homework.triple.global.error.ErrorCode;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,7 +32,7 @@ public class TravelEntity {
 
 	private Long cityId;
 
-	private TravelEntity(final String travelName, final TravelState state, final Long memberId, final Long cityId) {
+	public TravelEntity(final String travelName, final TravelState state, final Long memberId, final Long cityId) {
 		this.travelName = travelName;
 		this.state = state;
 		this.memberId = memberId;
@@ -40,4 +43,13 @@ public class TravelEntity {
 		return new TravelEntity(travelName, TravelState.PLAN_TRIP, memberId, cityId);
 	}
 
+	public void validateWriter(final Long memberId) {
+		if (!Objects.equals(this.memberId, memberId)) {
+			throw new CannotUpdateTravelException(ErrorCode.INVALID_PERMISSION);
+		}
+	}
+
+	public void updateTravelName(final String updateName) {
+		this.travelName = updateName;
+	}
 }

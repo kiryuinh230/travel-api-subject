@@ -14,7 +14,9 @@ public enum ErrorCode {
 	DUPLICATED_USERNAME(HttpStatus.CONFLICT, "duplicated username"),
 	WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "wrong password"),
 	DUPLICATED_CITY_NAME(HttpStatus.CONFLICT, "duplicated city name"),
-	CITY_NOT_FOUND(HttpStatus.CONFLICT, "not found city");
+	CITY_NOT_FOUND(HttpStatus.CONFLICT, "not found city"),
+	TRAVEL_NOT_FOUNT(HttpStatus.CONFLICT, "not found travel"),
+	INVALID_PERMISSION(HttpStatus.UNAUTHORIZED, "permission is invalid");
 
 	private final HttpStatus httpStatus;
 	private final String message;
