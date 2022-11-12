@@ -39,7 +39,7 @@ public class TravelController {
 	public CommonResponse<RegisterTravelResponse> registerTravel(Authentication authentication, @RequestBody RegisterTravelRequest request) {
 		Member member = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), Member.class);
 
-		final Travel travel = travelService.registerTravel(member.getId(), request.getTravelName(), request.getCityId());
+		final Travel travel = travelService.registerTravel(member.getId(), request.getTravelName(), request.getCityId(), request.getStartDate(), request.getEndDate());
 
 		return CommonResponse.success(RegisterTravelResponse.fromTravel(travel));
 	}
@@ -48,7 +48,7 @@ public class TravelController {
 	public CommonResponse<UpdateTravelNameResponse> updateTravel(Authentication authentication, @RequestBody UpdateTravelNameRequest request, @PathVariable Long travelId) {
 		Member member = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), Member.class);
 
-		final Travel travel = travelService.updateTravelName(member.getId(), travelId, request.getUpdateName());
+		final Travel travel = travelService.updateTravel(member.getId(), travelId, request.getUpdateName(), request.getUpdateState());
 
 		return CommonResponse.success(UpdateTravelNameResponse.fromTravel(travel));
 	}
