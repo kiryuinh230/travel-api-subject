@@ -10,6 +10,7 @@ import homework.triple.global.CommonResponse;
 import homework.triple.service.CityService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,9 +39,16 @@ public class CityController {
 	}
 
 	@GetMapping("/city/{id}")
-	public CommonResponse findCityById(@PathVariable Long id) {
+	public CommonResponse<CityResponse> findCityById(@PathVariable Long id) {
 		final City city = cityService.findById(id);
 
 		return CommonResponse.success(CityResponse.fromCity(city));
+	}
+
+	@DeleteMapping("/city/{id}")
+	public CommonResponse<Void> deleteCity(@PathVariable Long id) {
+		cityService.deleteCity(id);
+
+		return CommonResponse.success();
 	}
 }

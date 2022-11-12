@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateTravelNameRequest {
+public class UpdateTravelRequest {
 
 	private String updateName;
 	private TravelState updateState;

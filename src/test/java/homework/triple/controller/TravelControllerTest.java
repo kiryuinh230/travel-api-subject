@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import homework.triple.acceptance.AcceptanceTest;
 import homework.triple.controller.request.RegisterTravelRequest;
-import homework.triple.controller.request.UpdateTravelNameRequest;
+import homework.triple.controller.request.UpdateTravelRequest;
 import homework.triple.domain.TravelState;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -64,7 +64,7 @@ class TravelControllerTest extends AcceptanceTest {
 		final LocalDate startDate = LocalDate.of(22, 12, 1);
 		final LocalDate endDate = LocalDate.of(22, 12, 10);
 
-		final UpdateTravelNameRequest request = new UpdateTravelNameRequest(updateTravelName, updateTravelState, startDate, endDate);
+		final UpdateTravelRequest request = new UpdateTravelRequest(updateTravelName, updateTravelState, startDate, endDate);
 
 		final ExtractableResponse<Response> response = RestAssured.given().log().all()
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -140,6 +140,28 @@ class TravelControllerTest extends AcceptanceTest {
 			.then().log().all()
 			.extract()
 			.jsonPath().getLong("result.id");
+	}
+
+	public static void 여행_시작(final Long cityId) {
+		final String token = 로그인();
+
+		final Long travelId = 여행_등록(cityId);
+
+		final String travelName = "서울 여행";
+		final TravelState travelState = TravelState.TRAVELING;
+		LocalDate startDate = LocalDate.of(22, 12, 1);
+		LocalDate endDate = LocalDate.of(22, 12, 10);
+
+		final UpdateTravelRequest request = new UpdateTravelRequest(travelName, travelState, startDate, endDate);
+
+		RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.header("Authorization", "Bearer " + token)
+			.body(request)
+			.when()
+			.patch(TRAVEL_ENTRY_POINT + "/" + travelId)
+			.then().log().all()
+			.extract();
 	}
 
 }

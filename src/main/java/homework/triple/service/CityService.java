@@ -1,11 +1,14 @@
 package homework.triple.service;
 
 import homework.triple.domain.City;
+import homework.triple.domain.TravelState;
 import homework.triple.domain.entity.CityEntity;
+import homework.triple.domain.exception.CannotDeleteCityException;
 import homework.triple.domain.exception.CityNotFoundException;
 import homework.triple.domain.exception.DuplicateCityName;
 import homework.triple.global.error.ErrorCode;
 import homework.triple.repository.CityRepository;
+import homework.triple.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CityService {
 
 	private final CityRepository cityRepository;
+	private final TravelRepository travelRepository;
 
 	@Transactional
 	public City registerCity(final String cityName) {
@@ -43,5 +47,14 @@ public class CityService {
 			.orElseThrow(() -> new CityNotFoundException(ErrorCode.CITY_NOT_FOUND));
 
 		return City.fromEntity(cityEntity);
+	}
+
+	@Transactional
+	public void deleteCity(final Long cityId) {
+		if (travelRepository.existsByCityIdAndState(cityId, TravelState.TRAVELING)) {
+		    throw new CannotDeleteCityException(ErrorCode.CANNOT_DELETE_CITY);
+		}
+
+		cityRepository.deleteById(cityId);
 	}
 }

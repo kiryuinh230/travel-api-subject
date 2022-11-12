@@ -1,7 +1,7 @@
 package homework.triple.controller;
 
 import homework.triple.controller.request.RegisterTravelRequest;
-import homework.triple.controller.request.UpdateTravelNameRequest;
+import homework.triple.controller.request.UpdateTravelRequest;
 import homework.triple.controller.response.RegisterTravelResponse;
 import homework.triple.controller.response.TravelResponse;
 import homework.triple.controller.response.UpdateTravelNameResponse;
@@ -45,7 +45,7 @@ public class TravelController {
 	}
 
 	@PatchMapping("/travel/{travelId}")
-	public CommonResponse<UpdateTravelNameResponse> updateTravel(Authentication authentication, @RequestBody UpdateTravelNameRequest request, @PathVariable Long travelId) {
+	public CommonResponse<UpdateTravelNameResponse> updateTravel(Authentication authentication, @RequestBody UpdateTravelRequest request, @PathVariable Long travelId) {
 		Member member = ClassUtils.getSafeCastInstance(authentication.getPrincipal(), Member.class);
 
 		final Travel travel = travelService.updateTravel(member.getId(), travelId, request.getUpdateName(), request.getUpdateState());

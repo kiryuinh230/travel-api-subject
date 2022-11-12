@@ -17,7 +17,8 @@ public enum ErrorCode {
 	CITY_NOT_FOUND(HttpStatus.CONFLICT, "not found city"),
 	TRAVEL_NOT_FOUNT(HttpStatus.CONFLICT, "not found travel"),
 	INVALID_PERMISSION(HttpStatus.UNAUTHORIZED, "permission is invalid"),
-	TRAVEL_DATE_INVALID(HttpStatus.BAD_REQUEST, "travel start date is after end date");
+	TRAVEL_DATE_INVALID(HttpStatus.BAD_REQUEST, "travel start date is after end date"),
+	CANNOT_DELETE_CITY(HttpStatus.CONFLICT, "cannot delete traveling city");
 
 	private final HttpStatus httpStatus;
 	private final String message;
