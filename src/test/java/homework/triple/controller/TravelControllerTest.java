@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import homework.triple.acceptance.AcceptanceTest;
 import homework.triple.controller.request.RegisterTravelRequest;
+import homework.triple.controller.request.UpdateTravelNameRequest;
 import homework.triple.domain.TravelState;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -27,7 +28,7 @@ class TravelControllerTest extends AcceptanceTest {
 
 		final String travelName = "서울 여행";
 
-		RegisterTravelRequest request = new RegisterTravelRequest(travelName, cityId);
+		final RegisterTravelRequest request = new RegisterTravelRequest(travelName, cityId);
 
 		final ExtractableResponse<Response> response = RestAssured.given().log().all()
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -47,4 +48,53 @@ class TravelControllerTest extends AcceptanceTest {
 			() -> assertThat(response.jsonPath().getString("result.cityId")).isNotEmpty()
 		);
 	}
+
+	@DisplayName("여행을 수정한다.")
+	@Test
+	void update_travel() {
+		final Long cityId = 도시_등록();
+		final Long travelId = 여행_등록(cityId);
+
+		final String token = 로그인();
+
+		final String updateTravelName = "일본 여행";
+
+		final UpdateTravelNameRequest request = new UpdateTravelNameRequest(updateTravelName);
+
+		final ExtractableResponse<Response> response = RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.header("Authorization", "Bearer " + token)
+			.body(request)
+			.when()
+			.patch(TRAVEL_ENTRY_POINT + "/" + travelId)
+			.then().log().all()
+			.extract();
+
+		assertAll(
+			() -> assertThat(response.jsonPath().getString("resultCode")).isEqualTo("success"),
+			() -> assertThat(response.jsonPath().getString("result.id")).isNotEmpty(),
+			() -> assertThat(response.jsonPath().getString("result.updateTravelName")).isEqualTo(updateTravelName),
+			() -> assertThat(response.jsonPath().getString("result.memberId")).isNotEmpty(),
+			() -> assertThat(response.jsonPath().getString("result.cityId")).isNotEmpty()
+		);
+	}
+
+	public static Long 여행_등록(final Long cityId) {
+		final String token = 로그인();
+
+		final String travelName = "서울 여행";
+
+		final RegisterTravelRequest request = new RegisterTravelRequest(travelName, cityId);
+
+		return RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.header("Authorization", "Bearer " + token)
+			.body(request)
+			.when()
+			.post(TRAVEL_ENTRY_POINT + "/register")
+			.then().log().all()
+			.extract()
+			.jsonPath().getLong("result.id");
+	}
+
 }
