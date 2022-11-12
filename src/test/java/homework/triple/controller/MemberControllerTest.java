@@ -75,6 +75,20 @@ class MemberControllerTest extends AcceptanceTest {
 		);
 	}
 
+	@DisplayName("유효하지 않은 아이디로 로그인시 실패한다")
+	@Test
+	void not_found_member() {
+		final ExtractableResponse<Response> response = RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.body(MemberFixtures.loginMemberRequest())
+			.when()
+			.post(MEMBER_ENTRY_POINT + "/login")
+			.then().log().all()
+			.extract();
+
+		assertThat(response.jsonPath().getString("resultCode")).isEqualTo(ErrorCode.USER_NOT_FOUND.name());
+	}
+
 	public static void 회원가입() {
 		RestAssured.given().log().all()
 			.contentType(MediaType.APPLICATION_JSON_VALUE)

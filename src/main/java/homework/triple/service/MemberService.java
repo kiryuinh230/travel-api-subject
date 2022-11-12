@@ -1,6 +1,7 @@
 package homework.triple.service;
 
 import homework.triple.domain.entity.MemberEntity;
+import homework.triple.domain.exception.MemberNotFoundException;
 import homework.triple.domain.model.Member;
 import homework.triple.global.error.ErrorCode;
 import homework.triple.global.exception.TravelApplicationException;
@@ -28,7 +29,7 @@ public class MemberService {
 	public Member loadUserByUsername(String username) {
 		return memberEntityRepository.findByUserName(username)
 			.map(Member::fromEntity)
-			.orElseThrow(() -> new TravelApplicationException(ErrorCode.USER_NOT_FOUND, "user not found"));
+			.orElseThrow(() -> new MemberNotFoundException(ErrorCode.USER_NOT_FOUND, "user not found"));
 	}
 
 	@Transactional
