@@ -71,6 +71,28 @@ class CityControllerTest extends AcceptanceTest {
 
 	}
 
+	@DisplayName("단일 도시 조회 ")
+	@Test
+	void find_city() {
+		final Long cityId = 도시_등록();
+
+		final String token = 로그인();
+
+		final ExtractableResponse<Response> response = RestAssured.given().log().all()
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.header("Authorization", "Bearer " + token)
+			.when()
+			.get(CITY_ENTRY_POINT + "/" + cityId)
+			.then().log().all()
+			.extract();
+
+		assertAll(
+			() -> assertThat(response.jsonPath().getString("resultCode")).isEqualTo("success"),
+			() -> assertThat(response.jsonPath().getString("result.id")).isEqualTo(cityId.toString()),
+			() -> assertThat(response.jsonPath().getString("result.cityName")).isEqualTo("seoul")
+		);
+	}
+
 	public static Long 도시_등록() {
 		final String token = 로그인();
 
