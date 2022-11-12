@@ -12,6 +12,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 class CityControllerTest extends AcceptanceTest {
@@ -29,7 +30,7 @@ class CityControllerTest extends AcceptanceTest {
 
 		final ExtractableResponse<Response> response = RestAssured.given().log().all()
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.header("Authorization", "Bearer " + token)
+			.header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
 			.body(request)
 			.when()
 			.post(CITY_ENTRY_POINT + "/register")

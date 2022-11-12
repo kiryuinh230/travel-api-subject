@@ -25,7 +25,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/member/login")
-	public CommonResponse<String> login(@RequestBody @Valid LoginMemberRequest request) {
+	public CommonResponse<String> login(@RequestBody @Valid final LoginMemberRequest request) {
 		final String token = memberService.login(request.getUsername(), request.getPassword());
 
 		return CommonResponse.success(new LoginMemberResponse(token));

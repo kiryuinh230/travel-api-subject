@@ -109,7 +109,7 @@ class MemberControllerTest extends AcceptanceTest {
 			.post(MEMBER_ENTRY_POINT + "/login")
 			.then().log().all()
 			.extract()
-			.jsonPath().getString("result");
+			.jsonPath().getString("result.token");
 
 		return token;
 	}

@@ -27,9 +27,8 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/member/join", "/h2-console/**").permitAll()
-			.antMatchers("/api/**").authenticated()
-			.anyRequest().permitAll()
+			.antMatchers("/member/join", "/member/login", "/h2-console/**").permitAll()
+			.antMatchers("/**").authenticated()
 
 			.and()
 			.headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
